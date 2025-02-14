@@ -104,7 +104,7 @@ def plot_training_history(
     val_accs: List[float]
 ) -> None:
     """
-    Plot training and validation metrics history.
+    Plot training and validation metrics history, highlighting the best epoch.
     
     Args:
         train_losses (List[float]): Training losses
@@ -112,19 +112,31 @@ def plot_training_history(
         train_accs (List[float]): Training accuracies
         val_accs (List[float]): Validation accuracies
     """
-    plt.figure(figsize=(10, 4))
-    
+    epochs = list(range(1, len(train_losses) + 1))
+
+    # Encontrar la mejor época con la mayor val_acc
+    best_epoch = val_accs.index(max(val_accs)) + 1  # +1 porque los índices empiezan en 0
+    best_val_acc = max(val_accs)
+
+    plt.figure(figsize=(12, 5))
+
+    # Gráfica de Loss
     plt.subplot(1, 2, 1)
-    plt.plot(train_losses, label="Train Loss")
-    plt.plot(val_losses, label="Val Loss")
+    plt.plot(epochs, train_losses, label="Train Loss", color="blue")
+    plt.plot(epochs, val_losses, label="Val Loss", color="orange")
+    plt.axvline(best_epoch, color="blue", linestyle="--", alpha=0.7)  # Línea vertical en mejor epoch
+    plt.scatter(best_epoch, val_losses[best_epoch - 1], color="blue", marker="o", label=f'Best Epoch ({best_epoch})')
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
     plt.title("Loss")
     plt.legend()
 
+    # Gráfica de Accuracy
     plt.subplot(1, 2, 2)
-    plt.plot(train_accs, label="Train Acc")
-    plt.plot(val_accs, label="Val Acc")
+    plt.plot(epochs, train_accs, label="Train Acc", color="blue")
+    plt.plot(epochs, val_accs, label="Val Acc", color="orange")
+    plt.axvline(best_epoch, color="blue", linestyle="--", alpha=0.7)  # Línea vertical en mejor epoch
+    plt.scatter(best_epoch, best_val_acc, color="blue", marker="o", label=f'Best Epoch ({best_epoch})')
     plt.xlabel("Epoch")
     plt.ylabel("Accuracy")
     plt.title("Accuracy")
