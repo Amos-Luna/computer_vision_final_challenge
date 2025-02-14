@@ -76,11 +76,16 @@ def create_xception_model(
 
 
 def create_resnet50_model(
-    num_classes: int = 3, 
+  num_classes: int = 3, 
     dropout_rate: float = 0.7
 ) -> nn.Module:
-    #Implement
-    pass
+    model = timm.create_model('resnet50', pretrained=True)
+    num_features = model.fc.in_features
+    model.fc = nn.Sequential(
+        nn.Dropout(dropout_rate),
+        nn.Linear(num_features, num_classes)
+    )
+    return model
 
 
 def create_efficientnet_v2_s_model(
