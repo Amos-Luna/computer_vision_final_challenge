@@ -1,0 +1,11 @@
+jupyter
+numpy
+torch
+transformers
+scikit-learn
+matplotlib
+seaborn
+torchvision
+datasets
+netron
+timm
