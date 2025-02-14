@@ -1,5 +1,6 @@
 from typing import Dict, List, Tuple, Union, Optional
 from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms, models
 import matplotlib.pyplot as plt
 import torch.nn as nn
 import copy
@@ -84,10 +85,12 @@ def create_resnet50_model(
 
 def create_efficientnet_v2_s_model(
     num_classes: int = 3, 
-    dropout_rate: float = 0.7
 ) -> nn.Module:
-    #Implement
-    pass
+    model = models.efficientnet_v2_s(pretrained=True)
+    in_features = model.classifier[1].in_features
+    model.classifier[1] = nn.Linear(in_features, num_classes)
+    return model
+
 
 
 def train_model(
